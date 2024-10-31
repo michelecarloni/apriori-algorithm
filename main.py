@@ -35,4 +35,3 @@ if __name__ == '__main__':
     struc = Structure(data, threshold)
     struc.print_data_table()
     struc.start_algorithm()
-    # struc.output_walls()

@@ -57,32 +57,35 @@ class Structure:
         else:
             combination_dic = self.create_combination()
             combination_dic_first_filtered = self.filtering_first(combination_dic)
-            self.candidate_list.append(combination_dic_first_filtered)
+            self.candidate_list.append(combination_dic_first_filtered.copy())
             self.insert_discarded_values(combination_dic_first_filtered)
-            combination_dic_filtered_all = self.filtering_second(combination_dic_first_filtered)
+            combination_dic_filtered_all = self.filtering_second(combination_dic_first_filtered.copy())
             self.wall_list.append(combination_dic_filtered_all.copy())
+        
+        if len(self.wall_list[-1]) != 0:
+            print(f'below: {self.below_threshold_elements_list}')
+            print(f'candidate_list: {self.candidate_list[-1]}')
+            print(f'wall_list: {self.wall_list[-1]}')
+            print()
             
-        print(f'below: {self.below_threshold_elements_list}')
-        print(f'candidate_list: {self.candidate_list[-1]}')
-        print(f'wall_list: {self.wall_list[-1]}')
-        print()
+            self.iteration += 1
+            return True
         
-        if len(self.wall_list[-1]) == 0:
-            return False
+        return False
         
-        self.iteration += 1
-        return True
+        
             
     
     # filtering based on the supports of the previous itemsets
     def filtering_first(self, candidates_dic):
-        print(f'candidates_dic: {candidates_dic}')
         for tuple1 in list(candidates_dic.keys()).copy():
             for tuple2 in self.below_threshold_elements_list:
-                # print(f'{tuple1} | {tuple2}')
                 check = all(element in tuple1 for element in tuple2)
                 if check:
-                    del candidates_dic[tuple1]
+                    try: 
+                        del candidates_dic[tuple1]
+                    except:
+                        candidates_dic = {}
         return candidates_dic
     
                     
@@ -100,9 +103,8 @@ class Structure:
     def insert_discarded_values(self, candidates_dic):
         for key in candidates_dic.keys():
             if candidates_dic[key] <= self.threshold:
-                if str(type(key)) !=  "<class tuple>":
-                    tuple = ()
-                    tuple = tuple + (key,)
+                if str(type(key)) !=  "<class 'tuple'>":
+                    tuple = (key)
                 else:
                     tuple = key
                 self.below_threshold_elements_list.append(tuple)
