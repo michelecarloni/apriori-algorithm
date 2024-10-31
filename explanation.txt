@@ -1,0 +1,14 @@
+INPUT -> take the itemsets from input.txt
+
+ITERATIONS:
+    - find the i candidtes with their sup
+    - if sup < threshold eliminate that candidate
+    - create all the permutations with the remain candidates and calculate their sup
+    - eliminate all the permutations with sup < threshold
+    - you have the first wall of itemsets
+
+END: when all the candidates have the sup < threshold or you create all the permutations
+
+OUTPUT -> all the walls, each one store in a specific file.
+
+structure of the file: 'wall_i.txt', with i that is the iterations (starting from 1)
