@@ -63,7 +63,8 @@ class Structure:
             self.wall_list.append(combination_dic_filtered_all.copy())
         
         if len(self.wall_list[-1]) != 0:
-            print(f'below: {self.below_threshold_elements_list}')
+            print(f'N= {self.iteration}')
+            print(f'below_list: {self.below_threshold_elements_list}')
             print(f'candidate_list: {self.candidate_list[-1]}')
             print(f'wall_list: {self.wall_list[-1]}')
             print()
@@ -129,17 +130,18 @@ class Structure:
                         count += 1
                 
                 if count == 1:
+                    # check if the tuple already exist as a combination
                     new_tuple = tuple(set(pivot_itemset) | set(scroll_itemset))
                     check = any(set(new_tuple) == set(tuple) for tuple in combination_dic.keys())
                     if not check:
                         support = 0
-                        # create the support of the new_tuple
+                        # calculate the support of the new_tuple
                         for root_itemset in self.data_table.values():
                             check = all(element in root_itemset for element in new_tuple)
                             if check:
                                 support += 1
 
-                            combination_dic[new_tuple] = support
+                        combination_dic[new_tuple] = support
                             
         return combination_dic
                         
